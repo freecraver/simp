@@ -28,7 +28,7 @@ class WordCountAnalyzer(SimpleAggregatedAnalyzer):
 
         :param texts: corpus texts
         :param strategy: strategy to count words
-        :param language: only used for nltk-based tokenizers, for customer rules
+        :param language: only used for nltk-base tokenizer and spacy, for custom rules
         """
         super().__init__(texts)
         self.strategy = strategy
@@ -49,7 +49,7 @@ class WordCountAnalyzer(SimpleAggregatedAnalyzer):
         elif self.strategy == WordCountStrategy.NLTK_NIST:
             return NltkNistTokenizer()
         elif self.strategy == WordCountStrategy.SPACY:
-            return SpacyTokenizer()
+            return SpacyTokenizer(self.language)
         elif self.strategy == WordCountStrategy.TEXTBLOB:
             return TextBlobTokenizer()
         elif self.strategy == WordCountStrategy.GENSIM:

@@ -51,7 +51,7 @@ class WordCountAnalyzerTest(unittest.TestCase):
     def test_spacy_word_count_de(self):
         df_res = WordCountAnalyzer(texts, strategy=WordCountStrategy.SPACY, language='german')\
             .extract_dataset_metric()
-        self.assertEqual({8: 2, 11: 1, 14: 1}, df_res.to_dict()['count'])
+        self.assertEqual({8: 1, 9: 1, 10: 1, 14: 1}, df_res.to_dict()['count'])
 
     def test_textblob_word_count(self):
         df_res = WordCountAnalyzer(texts, strategy=WordCountStrategy.TEXTBLOB).extract_dataset_metric()
