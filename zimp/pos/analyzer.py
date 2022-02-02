@@ -3,6 +3,7 @@ import numpy as np
 
 from abc import ABC, abstractmethod
 from sklearn.feature_extraction.text import CountVectorizer
+from typing import List
 
 
 class Analyzer(ABC):
@@ -10,7 +11,7 @@ class Analyzer(ABC):
     used to extract text metrics from a dataset
     """
 
-    def __init__(self, texts: list[str]):
+    def __init__(self, texts: List[str]):
         self.texts = texts
 
     @abstractmethod
@@ -37,6 +38,6 @@ class CountAnalyzer(Analyzer, ABC):
     base for analyzers which operate on word counts
     """
 
-    def __init__(self, texts: list[str], count_vectorizer: CountVectorizer = None):
+    def __init__(self, texts: List[str], count_vectorizer: CountVectorizer = None):
         super(CountAnalyzer, self).__init__(texts)
         self.count_vectorizer = count_vectorizer

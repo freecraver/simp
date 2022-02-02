@@ -3,6 +3,7 @@ from enum import Enum
 from zimp.pos.analyzer import SimpleAggregatedAnalyzer
 from zimp.pos.tokenization.tokenizer import RegexTokenizer, PythonTokenizer, NltkTokenizer, NltkTweetTokenizer, \
     NltkNistTokenizer, SpacyTokenizer, TextBlobTokenizer, GensimTokenizer
+from typing import List
 
 
 class WordCountStrategy(Enum):
@@ -20,7 +21,7 @@ class WordCountStrategy(Enum):
 class WordCountAnalyzer(SimpleAggregatedAnalyzer):
 
     def __init__(self,
-                 texts: list[str],
+                 texts: List[str],
                  strategy: WordCountStrategy = WordCountStrategy.REGEX,
                  language: str = 'english'):
         """

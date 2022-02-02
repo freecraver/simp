@@ -14,10 +14,13 @@ from nltk.tokenize.nist import NISTTokenizer
 from textblob import TextBlob
 from gensim.utils import tokenize
 
+from typing import List
+
+
 class Tokenizer(ABC):
 
     @abstractmethod
-    def tokenize_text(self, text: str) -> list[str]:
+    def tokenize_text(self, text: str) -> List[str]:
         pass
 
 
@@ -28,12 +31,12 @@ class RegexTokenizer(Tokenizer):
         """
         self._f_regex = re.compile(pattern)
 
-    def tokenize_text(self, text: str) -> list[str]:
+    def tokenize_text(self, text: str) -> List[str]:
         return self._f_regex.findall(text)
 
 
 class PythonTokenizer(Tokenizer):
-    def tokenize_text(self, text: str) -> list[str]:
+    def tokenize_text(self, text: str) -> List[str]:
         return text.split()
 
 
@@ -42,7 +45,7 @@ class NltkTokenizer(Tokenizer):
         super().__init__()
         self.lang = lang
 
-    def tokenize_text(self, text: str) -> list[str]:
+    def tokenize_text(self, text: str) -> List[str]:
         return word_tokenize(text, self.lang)
 
 
@@ -51,7 +54,7 @@ class NltkTweetTokenizer(Tokenizer):
         super().__init__()
         self._base_tokenizer = TweetTokenizer()
 
-    def tokenize_text(self, text: str) -> list[str]:
+    def tokenize_text(self, text: str) -> List[str]:
         return self._base_tokenizer.tokenize(text)
 
 
@@ -60,7 +63,7 @@ class NltkNistTokenizer(Tokenizer):
         super().__init__()
         self._base_tokenizer = NISTTokenizer()
 
-    def tokenize_text(self, text: str) -> list[str]:
+    def tokenize_text(self, text: str) -> List[str]:
         return self._base_tokenizer.tokenize(text)
 
 
@@ -74,15 +77,15 @@ class SpacyTokenizer(Tokenizer):
         else:
             raise AttributeError(f'Language {lang} not supported')
 
-    def tokenize_text(self, text: str) -> list[str]:
+    def tokenize_text(self, text: str) -> List[str]:
         return [token.text for token in self._base_model(text)]
 
 
 class TextBlobTokenizer(Tokenizer):
-    def tokenize_text(self, text: str) -> list[str]:
+    def tokenize_text(self, text: str) -> List[str]:
         return TextBlob(text).words
 
 
 class GensimTokenizer(Tokenizer):
-    def tokenize_text(self, text: str) -> list[str]:
+    def tokenize_text(self, text: str) -> List[str]:
         return list(tokenize(text))
