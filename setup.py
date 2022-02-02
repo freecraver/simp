@@ -1,7 +1,11 @@
 import setuptools
 
-with open ("README.md", "r") as f:
+with open("README.md", "r") as f:
     readme_desc = f.read()
+
+with open("requirements.txt", "r") as f:
+    dependencies = [pkg for pkg in f.read().splitlines() if len(pkg) > 2 and not pkg.startswith('#')]
+    print(",".join(dependencies))
 
 setuptools.setup(
     name='zimp',
@@ -13,6 +17,7 @@ setuptools.setup(
     long_description_content_type='text/markdown',
     url='https://github.com/freecraver/simp',
     packages=setuptools.find_packages(),
+    install_requires=dependencies,
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Programming Language :: Python :: 3',
