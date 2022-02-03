@@ -11,7 +11,6 @@ from nltk import TweetTokenizer
 from nltk.tokenize import word_tokenize
 from nltk.tokenize.nist import NISTTokenizer
 
-from textblob import TextBlob
 from gensim.utils import tokenize
 
 from typing import List
@@ -79,11 +78,6 @@ class SpacyTokenizer(Tokenizer):
 
     def tokenize_text(self, text: str) -> List[str]:
         return [token.text for token in self._base_model(text)]
-
-
-class TextBlobTokenizer(Tokenizer):
-    def tokenize_text(self, text: str) -> List[str]:
-        return TextBlob(text).words
 
 
 class GensimTokenizer(Tokenizer):
