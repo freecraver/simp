@@ -41,3 +41,6 @@ class CountAnalyzer(Analyzer, ABC):
     def __init__(self, texts: List[str], count_vectorizer: CountVectorizer = None):
         super(CountAnalyzer, self).__init__(texts)
         self.count_vectorizer = count_vectorizer
+
+    def _get_corpus_counts(self):
+        return self.count_vectorizer.fit_transform(self.texts)
