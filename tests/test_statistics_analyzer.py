@@ -18,6 +18,10 @@ class StatisticsAnalyzerTest(unittest.TestCase):
         self.assertEqual(1, df_res['count'][41])
         self.assertEqual(1, df_res['count'][24])
 
+    def test_text_length_batch(self):
+        tla = TextLengthAnalyzer(['How many characters are in this sentence?', 'And what about this one?'])
+        self.assertEqual([41, 24],  tla.extract_batch_metrics())
+
 
 if __name__ == '__main__':
     unittest.main()

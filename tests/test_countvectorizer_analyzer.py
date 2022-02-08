@@ -121,3 +121,9 @@ class CountVectorizerAnalyzerTest(unittest.TestCase):
              'sentence': 1, 's': 1, 'right': 1, 'also': 1, 'of': 1, 'and': 1, 'missing': 1, 'mighta': 1, 'many': 1,
              'lowercase': 1, 'hu': 1, 'ehm': 1, 'distinguish': 1, 'compound': 1, 'can': 1, 'bedifferent': 1, 'are': 1,
              'no': 1}, df_res.to_dict()['count'])
+
+    def test_nltk_base_vectorizer_batched(self):
+        cva = CountVectorizerAnalyzer(texts, strategy=TokenizerStrategy.NLTK_BASE)
+        bm = cva.extract_batch_metrics()
+        # 2 question marks in third sentence
+        self.assertEqual(2, bm[2, cva.count_vectorizer.get_feature_names().index('?')])

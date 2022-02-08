@@ -4,6 +4,7 @@ import numpy as np
 from abc import ABC, abstractmethod
 from sklearn.feature_extraction.text import CountVectorizer
 from typing import List
+from scipy.sparse import csr_matrix
 
 
 class Analyzer(ABC):
@@ -32,6 +33,9 @@ class SimpleAggregatedAnalyzer(Analyzer, ABC):
     def extract_text_metric(self, text: str) -> int:
         pass
 
+    def extract_batch_metrics(self) -> List[int]:
+        return [self.extract_text_metric(txt) for txt in self.texts]
+
 
 class CountAnalyzer(Analyzer, ABC):
     """
@@ -44,3 +48,6 @@ class CountAnalyzer(Analyzer, ABC):
 
     def _get_corpus_counts(self):
         return self.count_vectorizer.fit_transform(self.texts)
+
+    def extract_batch_metrics(self) -> csr_matrix:
+        return self._get_corpus_counts()

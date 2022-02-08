@@ -58,3 +58,7 @@ class WordCountAnalyzerTest(unittest.TestCase):
     def test_gensim_word_count(self):
         df_res = WordCountAnalyzer(texts, strategy=TokenizerStrategy.GENSIM).extract_dataset_metric()
         self.assertEqual({7: 2, 9: 2, 10: 1}, df_res.to_dict()['count'])
+
+    def test_nltk_base_word_count_batch(self):
+        bm = WordCountAnalyzer(texts, strategy=TokenizerStrategy.NLTK_BASE, language='english').extract_batch_metrics()
+        self.assertEqual([8, 9, 10, 16, 10], bm)
