@@ -19,7 +19,7 @@ class BaseCountVectorizerAnalyzer(CountAnalyzer, ABC):
 
     def extract_dataset_metric(self) -> pd.DataFrame:
         counts = np.asarray(self._get_corpus_counts().sum(axis=0)).flatten()
-        return pd.DataFrame(counts, self.count_vectorizer.get_feature_names(), columns=['count'])\
+        return pd.DataFrame(counts, self.count_vectorizer.get_feature_names_out(), columns=['count'])\
             .sort_values(by='count', ascending=False)
 
 
@@ -38,7 +38,7 @@ class CountVectorizerAnalyzer(BaseCountVectorizerAnalyzer):
         super().__init__(texts, self.tokenizer.tokenize_text, lowercase)
 
 
-class SymbolCountVectorizer(BaseCountVectorizerAnalyzer):
+class SymbolCountVectorizerAnalyzer(BaseCountVectorizerAnalyzer):
     """
     used to obtain counts for unique symbols
     """

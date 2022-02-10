@@ -1,4 +1,4 @@
-from zimp.pos.analyzer import SimpleAggregatedAnalyzer, CountAnalyzer
+from zimp.pos.analyzer import SimpleAggregatedAnalyzer
 
 
 class TextLengthAnalyzer(SimpleAggregatedAnalyzer):
