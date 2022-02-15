@@ -96,3 +96,19 @@ class SymbolSimplifierTest(unittest.TestCase):
             'username twitter oca ulary of otheruser mi hta edifferent hu? d',
             'why don t you handle clitics with apostrophes differently?'
         ], s.simplify_dataset(texts))
+
+    def test_uninitialized_vocab_simplifier(self):
+        s = build_simplifier(SimplificationStrategy.SYMBOL_VOCAB_NOCASING, min_term_frequency=4)
+        self.assertEqual([''], s.simplify_dataset(['No initialization - all gone']))
+
+    def test_postinit_vocab_simplifier(self):
+        s = build_simplifier(SimplificationStrategy.SYMBOL_VOCAB_NOCASING, min_term_frequency=4)
+        s.load_parameters(dataset=texts)
+        self.assertEqual([
+            'how many words are in this sentence?',
+            'how do you handle compound words in the u s ?',
+            'ehm do you handle missin spaces?no?',
+            'username twitter oca ulary of otheruser mi hta edifferent hu? d',
+            'why don t you handle clitics with apostrophes differently?'
+        ], s.simplify_dataset(texts))
+

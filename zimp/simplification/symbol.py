@@ -29,7 +29,7 @@ class SimpleCharacterSimplifier(BaseSimplifier):
 class VocabularyCharacterSimplifier(BaseSimplifier):
 
     def __init__(self,
-                 dataset: List[str],
+                 dataset: List[str] = [],
                  min_term_frequency: float = 1,
                  min_document_frequency: float = 0,
                  remove_duplicate_whitespace=True,
@@ -67,8 +67,8 @@ class VocabularyCharacterSimplifier(BaseSimplifier):
 
         self.vocabulary = set(df_vocab[df_vocab['count'] >= self.min_tf].index)
 
-    def requires_corpus(self) -> bool:
-        return True
+    def _can_init_statistics(self) -> bool:
+        return bool(self._dataset)
 
     def simplify_text(self, text: str) -> str:
         if self._lowercase:
@@ -81,5 +81,10 @@ class VocabularyCharacterSimplifier(BaseSimplifier):
             text = ' '.join(text.split())
 
         return text
+
+    def load_parameters(self, dataset: List[str], **kwargs):
+        self._dataset = dataset
+        self._scva = SymbolCountVectorizerAnalyzer(dataset, remove_whitespace=False, lowercase=self._lowercase)
+        super().load_parameters(**kwargs)
 
 
