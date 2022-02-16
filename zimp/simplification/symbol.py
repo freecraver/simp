@@ -67,7 +67,7 @@ class VocabularyCharacterSimplifier(BaseSimplifier):
 
         self.vocabulary = set(df_vocab[df_vocab['count'] >= self.min_tf].index)
 
-    def _can_init_statistics(self) -> bool:
+    def can_init_statistics(self) -> bool:
         return bool(self._dataset)
 
     def simplify_text(self, text: str) -> str:
