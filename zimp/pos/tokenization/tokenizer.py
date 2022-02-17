@@ -69,12 +69,7 @@ class NltkNistTokenizer(Tokenizer):
 class SpacyTokenizer(Tokenizer):
     def __init__(self, lang='english') -> None:
         super().__init__()
-        if lang == 'english':
-            self._base_model = English()
-        elif lang == 'german':
-            self._base_model = German()
-        else:
-            raise AttributeError(f'Language {lang} not supported')
+        self._base_model = get_spacy_base_model(lang)
 
     def tokenize_text(self, text: str) -> List[str]:
         return [token.text for token in self._base_model(text)]
@@ -83,3 +78,12 @@ class SpacyTokenizer(Tokenizer):
 class GensimTokenizer(Tokenizer):
     def tokenize_text(self, text: str) -> List[str]:
         return list(tokenize(text))
+
+
+def get_spacy_base_model(lang: str):
+    if lang == 'english':
+        return English()
+    elif lang == 'german':
+        return German()
+    else:
+        raise AttributeError(f'Language {lang} not supported for spacy-based tokenization')

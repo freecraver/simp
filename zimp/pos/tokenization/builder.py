@@ -1,5 +1,7 @@
 from enum import Enum
 
+from zimp.pos.tokenization.sentence import SimpleSentenceTokenizer, PunktSentenceTokenizer, EuroParlSentenceTokenizer, \
+    CorpusPunktSentenceTokenizer, SpacySentenceTokenizer
 from zimp.pos.tokenization.tokenizer import *
 
 
@@ -33,3 +35,27 @@ def build_tokenizer(strategy, language):
         return GensimTokenizer()
 
     raise AttributeError(f'Strategy {strategy} not yet supported')
+
+
+class SentenceTokenizerStrategy(Enum):
+    SIMPLE = 'SIMPLE'
+    PUNKT = 'PUNKT'
+    CORPUS_PUNKT = 'CORPUS_PUNKT'
+    EUROPARL = 'EUROPARL'
+    SPACY = 'SPACY'
+
+
+def build_sentence_tokenizer(
+        strategy: SentenceTokenizerStrategy,
+        language: str = None,
+        dataset: List[str] = None) -> Tokenizer:
+    if strategy == SentenceTokenizerStrategy.SIMPLE:
+        return SimpleSentenceTokenizer()
+    elif strategy == SentenceTokenizerStrategy.PUNKT:
+        return PunktSentenceTokenizer(language)
+    elif strategy == SentenceTokenizerStrategy.CORPUS_PUNKT:
+        return CorpusPunktSentenceTokenizer(dataset)
+    elif strategy == SentenceTokenizerStrategy.EUROPARL:
+        return EuroParlSentenceTokenizer(language)
+    elif strategy == SentenceTokenizerStrategy.SPACY:
+        return SpacySentenceTokenizer(language)
