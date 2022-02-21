@@ -62,4 +62,4 @@ class SpacySentenceTokenizer(Tokenizer):
         self._base_model.add_pipe('sentencizer')
 
     def tokenize_text(self, text: str) -> List[str]:
-        return list(self._base_model(text).sents)
+        return [s.text for s in self._base_model(text).sents]
