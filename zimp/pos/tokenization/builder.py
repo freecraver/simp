@@ -16,7 +16,7 @@ class TokenizerStrategy(Enum):
     GENSIM = 'GENSIM'
 
 
-def build_tokenizer(strategy, language):
+def build_tokenizer(strategy, language) -> Tokenizer:
     if strategy == TokenizerStrategy.REGEX:
         return RegexTokenizer()
     elif strategy == TokenizerStrategy.PYTHON:
