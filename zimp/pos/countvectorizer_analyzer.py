@@ -26,7 +26,7 @@ class BaseCountVectorizerAnalyzer(CountAnalyzer, ABC):
 class CountVectorizerAnalyzer(BaseCountVectorizerAnalyzer):
     def __init__(self,
                  texts: List[str],
-                 strategy: TokenizerStrategy = TokenizerStrategy.REGEX,
+                 strategy: TokenizerStrategy = TokenizerStrategy.NLTK_BASE,
                  language: str = 'english',
                  lowercase: bool = True):
         """
