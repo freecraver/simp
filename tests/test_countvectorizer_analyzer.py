@@ -126,4 +126,4 @@ class CountVectorizerAnalyzerTest(unittest.TestCase):
         cva = CountVectorizerAnalyzer(texts, strategy=TokenizerStrategy.NLTK_BASE)
         bm = cva.extract_batch_metrics()
         # 2 question marks in third sentence
-        self.assertEqual(2, bm[2, cva.count_vectorizer.get_feature_names_out().index('?')])
+        self.assertEqual(2, bm[2, cva.count_vectorizer.get_feature_names_out().tolist().index('?')])
