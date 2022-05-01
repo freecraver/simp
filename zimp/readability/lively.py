@@ -79,7 +79,7 @@ class LivelyScore(ReadabilityScore):
             reference_texts, lowercase=lowercase)
 
         # build lookup dict for words
-        if reference_texts:
+        if reference_texts is not None:
             self.word_support_dict = build_word_support(reference_texts, max_n, count_vectorizer_analyzer)
         elif word_list:
             self.word_support_dict = word_list_to_support(word_list)
@@ -116,7 +116,7 @@ def get_default_word_list(lang: str) -> List[str]:
         suffix = 'de'
 
     cached_texts = cached_ds.get(lang)
-    if cached_texts:
+    if cached_texts is not None:
         return cached_texts
 
     ds_url = f'https://raw.githubusercontent.com/freecraver/zimp_resources/main/word_frequencies/top_10000_{suffix}.csv'
