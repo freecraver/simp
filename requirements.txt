@@ -7,3 +7,7 @@ scipy==1.7.3
 nltk==3.6.7
 spacy==3.2.1
 gensim==4.1.2
+
+# pos
+spacy==3.2.1
+stanza==1.4.0
