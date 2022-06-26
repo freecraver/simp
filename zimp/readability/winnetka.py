@@ -39,13 +39,17 @@ class PrepositionFrequencyScore(ReadabilityScore):
 
 
 class _SpacyPrepositionExtractor:
+    """
+    the german spacy model does not use UD tags, and the english one includes multiple preposition definitions (prep,
+    agent) - for a clear definition I decided to stick with adpositions (this includes postpositions)
+    """
 
     def __init__(self, language='english'):
-        self.base_model = get_or_download_model('core_web_sm', language)
+        self.base_model = get_or_download_model(language)
 
     def get_preposition_ratio(self, text):
         toks = self.base_model(text)
-        return len([t for t in toks if t.dep_ == 'prep']) / len(toks)
+        return len([t for t in toks if t.pos_ == 'ADP']) / len(toks)
 
 
 class _StanzaPrepositionExtractor:
