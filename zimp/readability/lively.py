@@ -53,10 +53,14 @@ class OutOfVocabularySizeScore(ReadabilityScore):
         self.lowercase = lowercase
 
     def get_score(self, text: str) -> float:
+        s, _ = self.get_filtered_toks(text)
+        return len(s)
+
+    def get_filtered_toks(self, text: str):
         tokens = self.word_tokenizer.tokenize_text(text)
         if self.lowercase:
             tokens = [t.lower() for t in tokens]
-        return len([t for t in tokens if t not in self.word_list])
+        return [t for t in tokens if t not in self.word_list], tokens
 
 
 class LivelyScore(ReadabilityScore):
