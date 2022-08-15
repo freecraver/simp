@@ -37,9 +37,9 @@ class WinnetkaScoreTest(unittest.TestCase):
 
     def test_winnetka_sentence(self):
         ws = WinnetkaScore()
-        self.assertEqual(860.7588461538461, ws.get_score(sentence_a))
+        self.assertEqual(213.4511538461539, ws.get_score(sentence_a))
 
     def test_winnetka_dataset(self):
         ws = WinnetkaScore()
-        self.assertEqual(756.6362499999999, ws.get_dataset_score([sentence_a, sentence_b, sentence_c]))
+        self.assertEqual(230.69875000000002, ws.get_dataset_score([sentence_a, sentence_b, sentence_c]))
 
