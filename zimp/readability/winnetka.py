@@ -8,6 +8,7 @@ from zimp.pos.stanza import get_or_download_model as get_or_download_stanza_mode
 from zimp.pos.tokenization.builder import TokenizerStrategy
 from zimp.readability.lively import OutOfVocabularySizeScore
 from zimp.readability.metrics import ReadabilityScore
+from zimp.readability.util import get_freq_score
 
 """
 Vogel, Mabel, and Carleton Washburne.
@@ -64,20 +65,11 @@ class WinnetkaScore(ReadabilityScore):
         cva = CountVectorizerAnalyzer(texts, self.tokenizer_strategy, self.language)
         word_counts = cva.extract_dataset_metric()
         X_2 = word_counts.index.size / word_counts.sum(axis=0).iloc[0] * self.s
-        X_3 = self._get_freq_score(texts, self.prep_extractor.get_prepositions) * self.s
-        X_4 = self._get_freq_score(texts, self.oov_score.get_filtered_toks) * self.s
-        X_5 = self._get_freq_score(texts, self.simple_sentence_filter.get_simple_sentences) * 75  # fixed to base 75, see Winnetka paper
+        X_3 = get_freq_score(texts, self.prep_extractor.get_prepositions) * self.s
+        X_4 = get_freq_score(texts, self.oov_score.get_filtered_toks) * self.s
+        X_5 = get_freq_score(texts, self.simple_sentence_filter.get_simple_sentences) * 75  # fixed to base 75, see Winnetka paper
 
         return 0.085 * X_2 + 0.101 * X_3 + 0.604 * X_4 - 0.411 * X_5 + 17.43
-
-    def _get_freq_score(self, texts, f_token_filter):
-        cnt_filter, cnt_toks = 0, 0
-        for txt in texts:
-            filtered_toks, toks = f_token_filter(txt)
-            cnt_filter += len(filtered_toks)
-            cnt_toks += len(toks)
-
-        return cnt_filter/cnt_toks
 
 
 class PrepositionFrequencyScore(ReadabilityScore):
