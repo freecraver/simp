@@ -4,7 +4,15 @@ from sklearn.feature_extraction.text import CountVectorizer
 from zimp.pos.classifiability.base import DatasetScore
 from zimp.pos.tokenization.builder import TokenizerStrategy, build_tokenizer
 from sklearn.tree import DecisionTreeClassifier, _tree
+from dataclasses import dataclass
 
+
+@dataclass
+class SeparabilityScoreDetails:
+    split_score: float  # ratio of correctly splittable samples
+    max_feature_importance: float  # highest importance of a single n-gram, ie total reduction of the trained criterion brought by it
+    used_features: int  # number of n-grams used for prediction
+    tree_depth: int  # depth of the trained tree
 
 class SeparabilityScore(DatasetScore):
 
@@ -28,6 +36,7 @@ class SeparabilityScore(DatasetScore):
             lowercase=lowercase,
             ngram_range=(n_gram_words, n_gram_words)
         )
+        self._last_clf = None
 
     def score(self, X, y):
         y = np.array(y)
@@ -39,6 +48,7 @@ class SeparabilityScore(DatasetScore):
 
         clf = DecisionTreeClassifier(random_state=123)  # fully expanded tree
         clf.fit(X_c, y)
+        self._last_clf = clf
         tree = clf.tree_
 
         # count all wrongly split input samples
@@ -48,5 +58,15 @@ class SeparabilityScore(DatasetScore):
         # ratio of correctly splittable samples
         return 1 - incorrect_sample_cnt.sum() / X.size
 
+    def score_detailed(self, X, y) -> SeparabilityScoreDetails:
+        split_score = self.score(X, y)
+        tree = self._last_clf.tree_
+        feature_importances = self._last_clf.feature_importances_
+        return SeparabilityScoreDetails(
+            split_score=split_score,
+            max_feature_importance=feature_importances.max(),
+            used_features=np.count_nonzero(self._last_clf.feature_importances_),
+            tree_depth=tree.max_depth
+        )
 
 
